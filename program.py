@@ -70,7 +70,7 @@ def bot():
     print(message)
 
     #send answer if bot mentioned
-    if message[0:18]=="Cisco_Angol_Bot Hello":
+    if message[0:18]=="Angol Hello":
         roomId=r.json()["roomId"]
         r=requests.post(messageApiUrl, headers={'Authorization': 'Bearer ' + botAccessToken}, data={'roomId': roomId, 'text': 'Hello from your bot!'})
     return jsonify(webhookMessage)
