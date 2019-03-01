@@ -1,1 +1,1 @@
-web: gunicorn Cisco_Angol:app
+web: gunicorn program:app
