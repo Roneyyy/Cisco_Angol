@@ -50,7 +50,33 @@ def about():
                 age = r["age"]
                 pushDataToDatabase(name,age)
                 return jsonify(name=name,age=age)
+
+@app.route("/api/bot",methods =['POST'])
+def bot():
+    # process message data
+    webhookMessage = request.json
+    print(webhookMessage)
+    messageId=webhookMessage["data"]["id"]
+    print(messageId)
+
+    #get message text
+    messageApiUrl="https://api.ciscospark.com/v1/messages"
+    #cisco_angol
+    botAccessToken="MGY3YjkwNzMtOGRmYi00YWYwLTk5YWYtYTI2MjQ1NGZlNjNiYzZhODUyZTItOTIy_PF84_consumer"
+
+    r= requests.get(messageApiUrl+"/"+messageId, headers={'Authorization': 'Bearer ' + botAccessToken})
+    print(r.json())
+    message=r.jason()["text"]
+    print(message)
+
+    #send answer if bot mentioned
+    if message[0:18]=="Cisco_Angol_Bot Hello":
+        roomId=r.json()["roomId"]
+        r=requests.post(messageApiUrl, headers={'Authorization': 'Bearer ' + botAccessToken}, data={'roomId': roomId, 'text': 'Hello from your bot!'})
+    return jsonify(webhookMessage)
+
         
+
 initDatabase()
 pushDataToDatabase("Farkas Roland",23)
 if __name__=="__main__":
